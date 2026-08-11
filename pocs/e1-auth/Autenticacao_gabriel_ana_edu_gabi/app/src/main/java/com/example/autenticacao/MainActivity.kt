@@ -25,10 +25,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val auth = FirebaseAuth.getInstance()
 
-                    // Estado que controla quem é o usuário atual
                     var currentUser by remember { mutableStateOf(auth.currentUser) }
 
-                    // Se o currentUser não for nulo, mostra a tela "Logado"
                     if (currentUser != null) {
                         Column(
                             modifier = Modifier.fillMaxSize(),
@@ -42,21 +40,18 @@ class MainActivity : ComponentActivity() {
 
                             Spacer(modifier = Modifier.height(24.dp))
 
-                            // Botão de deslogar
                             Button(
                                 onClick = {
-                                    auth.signOut() // Desloga do Firebase
-                                    currentUser = null // Atualiza a tela para voltar ao Login
+                                    auth.signOut()
+                                    currentUser = null
                                 }
                             ) {
                                 Text("Sair da conta")
                             }
                         }
                     } else {
-                        // Se for nulo, mostra a tela de Login
                         LoginScreen(
                             onLoginSuccess = {
-                                // Quando o login der certo, atualizamos o estado com o novo usuário
                                 currentUser = auth.currentUser
                             }
                         )
@@ -117,7 +112,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                             isLoading = false
                             if (task.isSuccessful) {
                                 Toast.makeText(context, "Login OK!", Toast.LENGTH_SHORT).show()
-                                onLoginSuccess() // Chama a função que atualiza a tela
+                                onLoginSuccess()
                             } else {
                                 Toast.makeText(context, "Erro: ${task.exception?.localizedMessage}", Toast.LENGTH_LONG).show()
                             }
